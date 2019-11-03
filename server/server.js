@@ -13,6 +13,8 @@ let port = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(cors())
 
+console.log("strated server")
+
 app.get('/users', (req, res) => {
     User.find().then((users) => {
         res.send(users)
@@ -63,7 +65,7 @@ app.post('/admin', (req, res) => {
 })
 
 app.get('/disease', (req, res) => {
-    Admin.find().then((disease) => {
+    Disease.find().then((disease) => {
         res.send(disease)
     }).catch((err) => {
         res.status(400).send(err)
