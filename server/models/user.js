@@ -10,6 +10,9 @@ let User = mongoose.model('User', {
     education:{
         type:String
     },
+    email:{
+        type:String
+    },
     age:{
         type:Number
     },

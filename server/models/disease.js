@@ -21,7 +21,7 @@ let Disease = mongoose.model('Disease', {
     },
     status:{
         type:String
-    },
+    }
 })
 
 module.exports = { Disease }

@@ -13,8 +13,6 @@ let port = process.env.PORT || 3000
 app.use(bodyParser.json())
 app.use(cors())
 
-console.log("strated server")
-
 app.get('/users', (req, res) => {
     User.find().then((users) => {
         res.send(users)
@@ -41,6 +39,44 @@ app.post('/users', (req, res) => {
     })
 })
 
+app.post('/deleteUser',(req,res)=>{
+    let id=req.body.id
+
+    User.findOneAndDelete({_id:id}).then((doc)=>{
+        res.send({user:doc,message:'User deleted successfully'})
+    }).catch((err)=>{
+        res.send({error:err})
+    })
+})
+
+app.post('modifyDisease',(req,res)=>{
+    let did=req.body.did
+    let diseasename=req.body.diseasename
+    let symptoms=req.body.symptoms
+    let medicine=req.body.medicine
+    let prevention=req.body.prevention
+    let reference=req.body.reference
+    let status=req.body.status
+
+    let di={diseasename,symptoms,medicine,prevention,reference,status}
+
+    Disease.findOneAndUpdate({did},di,{new:true}).then((doc)=>{
+        res.send({disease:doc,message:'Disease updated successfully'})
+    }).catch((err)=>{
+        res.send({error:err})
+    })
+})
+
+app.post('/deleteDisease',(req,res)=>{
+    let did=req.body.did
+
+    Disease.findOneAndDelete({did}).then((doc)=>{
+        res.send({disease:doc,message:'Disease deleted successfully'})
+    }).catch((err)=>{
+        res.send({error:err})
+    })
+})
+
 app.get('/admin', (req, res) => {
     Admin.find().then((admin) => {
         res.send(admin)
@@ -57,7 +93,7 @@ app.post('/admin', (req, res) => {
         password:req.body.password,
     })
 
-    user.save().then((doc) => {
+    admin.save().then((doc) => {
         res.send(doc)
     }).catch((err) => {
         res.status(400).send(err)
@@ -85,10 +121,21 @@ app.post('/disease', (req, res) => {
         status:req.body.status,
     })
 
-    user.save().then((doc) => {
+    disease.save().then((doc) => {
         res.send(doc)
     }).catch((err) => {
         res.status(400).send(err)
+    })
+})
+
+app.post('/changeDiseaseStatus',(req,res)=>{
+    let did=req.body.did
+    let status=req.body.status
+
+    Disease.findOneAndUpdate({did},{status},{new:true}).then((doc)=>{
+        res.send({disease:doc,message:'Disease updated successfully'})
+    }).catch((err)=>{
+        res.send({error:err})
     })
 })
 
